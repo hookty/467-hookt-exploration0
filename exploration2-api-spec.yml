@@ -1,0 +1,80 @@
+openapi: 3.0.0
+info:
+  version: '1'
+  title: exploration2
+  description: Example of a simple item collection REST API
+servers:
+- url: "https://awpeivqnq5.execute-api.us-east-1.amazonaws.com/prod/{basePath}"
+  variables:
+    basePath:
+      default: ""
+paths:
+  /items/{id}:
+    get:
+      responses:
+        '200':
+          description: "Details of the item with {id}"
+    parameters:
+    - name: "id"
+      in: "path"
+      description: Generated path parameter for id
+      required: true
+      schema:
+        type: "string"
+  /items:
+    get:
+      description: Return the list of all items
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Item"
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:   
+                  message:
+                    type: string
+    put:
+      description: Add a new item to the database
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Item'
+      responses:
+        '200':
+          description: Successfully created a new Item
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:   
+                  message:
+                    type: string
+components:
+  schemas:
+    Item:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          description: ID of the item
+        name:
+          type: string
+          description: Name of the item
+        description:
+          type: string
+          description: Description of the thing
